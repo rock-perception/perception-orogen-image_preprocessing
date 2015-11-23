@@ -55,9 +55,13 @@ void DepthImage2Pointcloud::frameCallback(const base::Time &ts, const ::RTT::ext
             }
         }
     }else{
-        for(int x = 0; x<frame_sample->width;x++){
-            for(int y = 0; y<frame_sample->height;y++){
+        for(int y = 0; y<frame_sample->height;y++){
+            for(int x = 0; x<frame_sample->width;x++){
                     if(!frame_sample->getScenePoint(x,y,v)){
+                        if(keepNAN) {
+                            v<<base::NaN<double>(),base::NaN<double>(),base::NaN<double>();
+                            pc.points.push_back(v);
+                        }
                         continue;
                     }
                     pc.points.push_back(tf * v);
