@@ -32,6 +32,10 @@ task_context "BaseTask" do
 end
 
 task_context "DepthImage2Pointcloud" do
+
+    # Keep a static size, Invalid Points are set to NAN
+    property("keepNAN","bool",false)
+
     input_port("color_frame", ro_ptr("/base/samples/frame/Frame")).
         doc("Color Frame for DepthImage if availible")
 

@@ -25,6 +25,8 @@ namespace image_preprocessing {
     {
 	friend class DepthImage2PointcloudBase;
     protected:
+        bool keepNAN;
+
         ::RTT::extras::ReadOnlyPointer< ::base::samples::frame::Frame > color_frame;
 
         virtual void color_frameCallback(const base::Time &ts, const ::RTT::extras::ReadOnlyPointer< ::base::samples::frame::Frame > &color_frame_sample);
