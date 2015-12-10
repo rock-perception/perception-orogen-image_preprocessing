@@ -32,6 +32,12 @@ task_context "BaseTask" do
 end
 
 task_context "DepthImage2Pointcloud" do
+
+    operation("createPointcloud").
+        argument("dist",ro_ptr("/base/samples/DistanceImage")).
+        argument("color",ro_ptr("/base/samples/frame/Frame")).
+        returns("/base/samples/Pointcloud")
+   
     input_port("color_frame", ro_ptr("/base/samples/frame/Frame")).
         doc("Color Frame for DepthImage if availible")
 

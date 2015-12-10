@@ -26,6 +26,8 @@ namespace image_preprocessing {
 	friend class DepthImage2PointcloudBase;
     protected:
         ::RTT::extras::ReadOnlyPointer< ::base::samples::frame::Frame > color_frame;
+        
+        virtual ::base::samples::Pointcloud createPointcloud(::RTT::extras::ReadOnlyPointer< ::base::samples::DistanceImage > const & dist, ::RTT::extras::ReadOnlyPointer< ::base::samples::frame::Frame > const & color);
 
         virtual void color_frameCallback(const base::Time &ts, const ::RTT::extras::ReadOnlyPointer< ::base::samples::frame::Frame > &color_frame_sample);
 
