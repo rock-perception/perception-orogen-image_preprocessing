@@ -31,9 +31,14 @@ void DepthImage2Pointcloud::frameCallback(const base::Time &ts, const ::RTT::ext
     pc.time = frame_sample->time;
     Eigen::Vector3d v;
     if(color_frame.get()){
-        for(int x = 0; x<frame_sample->width;x++){
-            for(int y = 0; y<frame_sample->height;y++){
+        for(int y = 0; y<frame_sample->height;y++){
+            for(int x = 0; x<frame_sample->width;x++){
                 if(!frame_sample->getScenePoint(x,y,v)){
+                    if(keepNAN) {
+                        v<<base::NaN<double>(),base::NaN<double>(),base::NaN<double>();
+                        pc.points.push_back(v);
+                        pc.colors.push_back(Eigen::Vector4d(0,0,0,1.0f));
+                    }
                     continue;
                 }
                 pc.points.push_back(tf * v);
@@ -50,9 +55,13 @@ void DepthImage2Pointcloud::frameCallback(const base::Time &ts, const ::RTT::ext
             }
         }
     }else{
-        for(int x = 0; x<frame_sample->width;x++){
-            for(int y = 0; y<frame_sample->height;y++){
+        for(int y = 0; y<frame_sample->height;y++){
+            for(int x = 0; x<frame_sample->width;x++){
                     if(!frame_sample->getScenePoint(x,y,v)){
+                        if(keepNAN) {
+                            v<<base::NaN<double>(),base::NaN<double>(),base::NaN<double>();
+                            pc.points.push_back(v);
+                        }
                         continue;
                     }
                     pc.points.push_back(tf * v);
@@ -71,6 +80,9 @@ bool DepthImage2Pointcloud::configureHook()
 {
     if (! DepthImage2PointcloudBase::configureHook())
         return false;
+
+    keepNAN=_keepNAN.get();
+
     return true;
 }
 bool DepthImage2Pointcloud::startHook()
